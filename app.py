@@ -66,6 +66,31 @@ def add_player():
     connection.close()
     return jsonify({"message": "Player added successfully."}), 201
 
+@app.route("/api/players/<player_id>", methods=["PUT"])
+def update_player(player_id):
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+    data = request.get_json()
+    player_name = data["name"]
+    team = data["team"]
+    position = data["position"]
+    cursor.execute("""
+        UPDATE players SET name = ?, team = ?, position = ? WHERE player_id = ?
+    """, (player_name, team, position, player_id))
+    connection.commit()
+    connection.close()
+    return jsonify({"message": "Player successfully updated."}), 200
+
+@app.route("/api/players/<player_id>", methods=["DELETE"])
+def delete_player(player_id):
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM players WHERE player_id = ?", (player_id,))
+    connection.commit()
+    connection.close()
+    return jsonify({"message": "Player successfully deleted."}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
