@@ -11,9 +11,9 @@ def seed_data():
     players_df = pd.read_csv("sample_data/players.csv")
     player_stats_df = pd.read_csv("sample_data/player_stats.csv")
 
-    games_df.to_sql("games", con=conn, if_exists="replace", index=False)
-    players_df.to_sql("players", con=conn, if_exists="replace", index=False)
-    player_stats_df.to_sql("player_stats", con=conn, if_exists="replace", index=False)
+    games_df.to_sql("games", con=conn, if_exists="append", index=False)
+    players_df.to_sql("players", con=conn, if_exists="append", index=False)
+    player_stats_df.to_sql("player_stats", con=conn, if_exists="append", index=False)
 
     print("Games data successfully loaded.")
     print("Players data successfully loaded.")
